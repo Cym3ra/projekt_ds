@@ -1,6 +1,7 @@
 import re
 from datasets import load_dataset, DatasetDict
 import pandas as pd
+from sklearn.model_selection import train_test_split
 
 
 def load_imdb_data_as_dataframe() -> tuple[pd.DataFrame, pd.DataFrame]:
@@ -30,17 +31,24 @@ def clean_text(text) -> str:
 
     return text
 
-def prepare_data_for_logreg() -> tuple[pd.Series, pd.Series, pd.Series, pd.Series]:
-    """Loads the dataser, removes overlapping reviews from the test set,
-    cleans the text and returns X y for both training and testing"""
+def prepare_data_for_logreg(test_size: float = 0.2, random_state: int = 42) -> tuple[pd.Series, pd.Series, pd.Series, pd.Series]:
+    """Loads the dataser, filter overlap,
+    cleans the text and splits tarin into train/validation sets"""
     train_df, test_df_full = load_imdb_data_as_dataframe()
 
     test_df = filter_overlapping_texts(train_df, test_df_full)
 
-    X_train = train_df["text"].apply(clean_text)
-    y_train = train_df["label"]
+    X_full = train_df["text"].apply(clean_text)
+    y_full = train_df["label"]
 
     X_test = test_df["text"].apply(clean_text)
     y_test = test_df["label"]
+
+    X_train, X_val, y_train, y_val = train_test_split(
+        X_full,
+        y_full,
+        test_size=test_size,
+        random_state=random_state
+    )
 
     return X_train, y_train, X_test, y_test
