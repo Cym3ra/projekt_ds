@@ -31,10 +31,13 @@ def clean_text(text) -> str:
 
     return text
 
-def prepare_data_for_logreg(test_size: float = 0.2, random_state: int = 42) -> tuple[pd.Series, pd.Series, pd.Series, pd.Series]:
-    """Loads the dataser, filter overlap,
-    cleans the text and splits tarin into train/validation sets"""
-    train_df, test_df_full = load_imdb_data_as_dataframe()
+def prepare_data_for_logreg(
+        train_df: pd.DataFrame,
+        test_df_full: pd.DataFrame,
+        test_size: float = 0.2, 
+        random_state: int = 42
+    ):
+    """Filter overlapping texts, cleans reviews and splits train into train/validation sets"""
 
     test_df = filter_overlapping_texts(train_df, test_df_full)
 
@@ -51,4 +54,4 @@ def prepare_data_for_logreg(test_size: float = 0.2, random_state: int = 42) -> t
         random_state=random_state
     )
 
-    return X_train, y_train, X_test, y_test
+    return X_train, X_val, X_test, y_train, y_val, y_test
