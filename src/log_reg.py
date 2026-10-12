@@ -13,3 +13,11 @@ def vectorize_text(X_train: pd.Series, X_val: pd.Series, X_test: pd.Series) -> t
 
     return tfidf, X_train_tfidf, X_val_tfidf, X_test_tfidf
 
+def train_logistic_regression(
+        X_train_tfidf, y_train, max_iter: int = 1000, random_state: int = 42
+) -> LogisticRegression:
+    """Trains a Logistic Regression model on the vectorized training data"""
+    model = LogisticRegression(max_iter=max_iter, random_state=random_state)
+    model.fit(X_train_tfidf, y_train)
+
+    return model
