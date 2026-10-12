@@ -56,7 +56,6 @@ def create_classification_report(y_true, y_pred):
         y_pred,
         labels=[0, 1],
         target_names=["Negative", "Positive"],
-        output_dict=True,
         zero_division=0,
     )
 
