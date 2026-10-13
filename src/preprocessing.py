@@ -11,10 +11,6 @@ def load_imdb_data_as_dataframe() -> tuple[pd.DataFrame, pd.DataFrame]:
     test_df = pd.DataFrame(dataset["test"])
     return train_df, test_df
 
-def load_imdb_raw_dataset() -> DatasetDict:
-    """Loading and returning Hugging Face dataset"""
-    return load_dataset("stanfordnlp/imdb")
-
 def filter_overlapping_texts(train_df: pd.DataFrame, test_df: pd.DataFrame) -> pd.DataFrame:
     """Identifies and filters out reviews in the test set tha also appear in the training ser (to prevent data leakage)"""
     common_text = set(train_df["text"]).intersection(set(test_df["text"]))
@@ -55,3 +51,26 @@ def prepare_data_for_logreg(
     )
 
     return X_train, X_val, X_test, y_train, y_val, y_test
+
+def load_imdb_raw_dataset() -> DatasetDict:
+    """Loading and returning Hugging Face dataset"""
+    return load_dataset("stanfordnlp/imdb")
+
+
+def prepare_data_for_distilbert(test_size: float = 0.2, seed: int = 42):
+    """Loads raw Hugging Face datasets, removes train/test overlaps,
+    and splits the training data into train and validation sets"""
+    dataset = load_imdb_raw_dataset()
+    train_dataset = dataset["train"]
+    test_dataset = dataset["test"]
+
+    train_text = set(train_dataset["text"])
+    test_dataset = test_dataset.filter(
+        lambda example: example["text"] not in train_text
+    )
+
+    split = train_dataset.train_test_split(test_size=test_size, seed=seed)
+    train_dataset = split["train"]
+    val_dataset = split["test"]
+
+    return train_dataset, val_dataset, test_dataset
