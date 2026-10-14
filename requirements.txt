@@ -28,6 +28,7 @@ datasets==5.0.1
 debugpy==1.8.22
 defusedxml==0.7.1
 dill==0.4.1
+evaluate==0.4.6
 executing==2.2.1
 fastjsonschema==2.22.2
 filelock==4.0.11
