@@ -2,3 +2,15 @@
 __pycache__/
 *.pyc
 .env
+
+# Utdata från Hugging Face Trainer / sparade modeller
+tmp_trainer/
+best_model/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Editor/OS
+.vscode/
+.DS_Store
+Thumbs.db
