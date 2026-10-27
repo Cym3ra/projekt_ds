@@ -1,11 +1,21 @@
 # Sentimentanalys av IMDb-filmrecensioner
 
+## Problem och syfte
+
+Det finns enorma mängder recensioner, kommentarer och annan text på nätet, för mycket för att läsa manuellt. Sentimentanalys gör det möjligt att automatiskt avgöra om en text är positiv eller negativ.
+
 Projektet klassificerar filmrecensioner från IMDb som **positiva** eller **negativa** och jämför två modeller:
 
 1. **Logistisk regression med TF-IDF**: en klassisk, snabb baslinje.
 2. **DistilBERT** (`distilbert-base-uncased`): en förtränad transformermodell som finjusteras för sentimentklassificering med Hugging Face `transformers`.
 
 Syftet är att undersöka hur mycket en förtränad språkmodell förbättrar resultatet jämfört med en enkel linjär modell, och vad förbättringen kostar i beräkningsresurser.
+
+## Målgrupp
+
+- **Studenter och andra som lär sig NLP**, som vill se en jämförelse mellan en klassisk ML-modell och en transformermodell på samma uppgift.
+- **Utvecklare och analytiker** som ska välja en modell för textklassificering och behöver väga träffsäkerhet mot beräkningskostnad.
+- **Organisationer med mycket kundtext**, till exempel streamingtjänster, butiker eller recensionssajter, som vill sammanfatta vad användare tycker utan att läsa allt manuellt.
 
 ## Resultat
 
@@ -112,9 +122,20 @@ Modellerna utvärderas med accuracy, precision, recall, F1-score, förväxlingsm
 - **Trunkering:** recensioner längre än 512 tokens kortas av, så information i slutet av långa recensioner kan gå förlorad.
 - **Vidare arbete:** träna DistilBERT på hela träningsmängden med GPU, testa fler epoker och större modeller (BERT, RoBERTa).
 
-## Författare
+## Gruppmedlemmar
 
 - Carina Karlsson
 - Nadine Knoop
 - Rebecca Andersson
 - Vera Stopp
+
+## Användning av generativ AI
+
+- **Kod och analys:** ChatGPT, Gemini och Claude användes genomgående i projektet. De använts för att diskutera tillvägagångsätt och förenkla dokumentation kring Hugging face Trainer och DistilBERT. Även använts för att göra utkast till DistilBERT-kod. Claude gick igenom skriven README-fil för att se om något hade missats eller behövde ändras. 
+
+## Licens och användningsvillkor
+
+- **Kod:** Projektet har ingen egen licensfil och gjordes som ett skolprojekt.
+- **Data:** IMDb-datasetet (Maas et al., 2011) är avsett för forskning och utbildning. Den som använder datasetet ombeds citera:
+  > Andrew L. Maas, Raymond E. Daly, Peter T. Pham, Dan Huang, Andrew Y. Ng och Christopher Potts. 2011. *Learning Word Vectors for Sentiment Analysis.* Proceedings of the 49th Annual Meeting of the Association for Computational Linguistics (ACL 2011).
+- **Modell:** `distilbert-base-uncased` är licensierad under Apache 2.0.
