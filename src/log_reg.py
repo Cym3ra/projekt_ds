@@ -17,7 +17,7 @@ def train_logistic_regression(
         X_train_tfidf, y_train, max_iter: int = 1000, random_state: int = 42
 ) -> LogisticRegression:
     """Trains a Logistic Regression model on the vectorized training data"""
-    model = LogisticRegression(max_iter=max_iter, random_state=random_state)
-    model.fit(X_train_tfidf, y_train)
+    model_lr = LogisticRegression(max_iter=max_iter, random_state=random_state)
+    model_lr.fit(X_train_tfidf, y_train)
 
-    return model
+    return model_lr
