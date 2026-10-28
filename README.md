@@ -13,9 +13,7 @@ Syftet är att undersöka hur mycket en förtränad språkmodell förbättrar re
 
 ## Målgrupp
 
-- **Studenter och andra som lär sig NLP**, som vill se en jämförelse mellan en klassisk ML-modell och en transformermodell på samma uppgift.
-- **Utvecklare och analytiker** som ska välja en modell för textklassificering och behöver väga träffsäkerhet mot beräkningskostnad.
-- **Organisationer med mycket kundtext**, till exempel streamingtjänster, butiker eller recensionssajter, som vill sammanfatta vad användare tycker utan att läsa allt manuellt.
+- **Streamingsajt**, som vill sammanfatta vad användare tycker utan att läsa allt manuellt.
 
 ## Resultat
 
@@ -24,13 +22,14 @@ Resultat på testdata:
 | Modell                       | Träningsdata | Accuracy | Precision | Recall | F1     |
 |------------------------------|--------------|----------|-----------|--------|--------|
 | Logistisk regression (TF-IDF)| 20 000       | 0,8809   | 0,8797    | 0,8833 | 0,8815 |
-| DistilBERT                   | 5 000        | **0,8971** | **0,8955** | **0,8996** | **0,8976** |
+| DistilBERT                   | 5 000        | **0,8970** | **0,8960** | **0,8989** | **0,8956** |
 
 - DistilBERT var bättre på alla mått, men skillnaden var liten (cirka 1,6 procentenheter i accuracy).
-- DistilBERT tränades på en fjärdedel så mycket data som logistisk regression. Vi begränsade datan eftersom finjusteringen på CPU tog cirka **2,4 timmar** (en epok, 5 000 recensioner). Logistisk regression tränas på några sekunder.
+- DistilBERT tränades på en fjärdedel så mycket data som logistisk regression. Vi begränsade datan eftersom finjusteringen på CPU tog flera timmar (en epok, 5 000 recensioner). Logistisk regression tränas på några sekunder.
 - Logistisk regression är alltså en stark baslinje med låg beräkningskostnad. DistilBERT ger bäst resultat, men förbättringen måste vägas mot det betydligt högre resursbehovet.
+- Confusion-matriserna visar att båda modellerna gör ungefär lika många fel åt båda hållen så ingen av dem gynnar en viss klass. DistilBERT gör totalt 2 562 fel jämfört med 2 963 för logistic regression, vilket motsvarar ungefär 14 % färre fel. Förbättringen syns i båda klasserna vilket tyder på att DistilBERT är generellt säkrare snarare än bättre på bara en viss klass. 
 
-Mer om resultaten, med förväxlingsmatriser och exempel på felklassificerade recensioner, finns i `report.ipynb`.
+Confusion-matriserna och exempel på felklassificerade recensioner, finns i `report.ipynb`.
 
 ## Dataset
 
@@ -56,7 +55,6 @@ projekt_ds/
 │   ├── distilbert_model.py   # Tokenisering, modell och Trainer-konfiguration för DistilBERT
 │   └── evaluation.py         # Mått, förväxlingsmatris, klassificeringsrapport, felanalys
 ├── report.ipynb              # Huvudnotebook: EDA, båda modellerna och jämförelse
-├── distilbert_veras.ipynb    # Tidigt experiment med DistilBERT (koden flyttades sedan till src/)
 ├── tmp_trainer/              # Utdata från Hugging Face Trainer (skapas vid körning)
 ├── requirements.txt
 └── .gitignore
@@ -112,7 +110,7 @@ pip install -r requirements.txt
 | Weight decay     | 0,01                      |
 
 ### Utvärdering
-Modellerna utvärderas med accuracy, precision, recall, F1-score, förväxlingsmatris och klassificeringsrapport (`src/evaluation.py`). Vi tittar också på de felklassificerade recensioner där modellen var mest säker, för att förstå var den gör fel.
+Modellerna utvärderas med accuracy, precision, recall, F1-score, confusion-matris och klassificeringsrapport (`src/evaluation.py`). Vi tittar också på de felklassificerade recensioner där modellen var mest säker, för att förstå var den gör fel.
 
 ## Begränsningar och vidare arbete
 
